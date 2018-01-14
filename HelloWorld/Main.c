@@ -27,10 +27,10 @@ int main() {
 	const int NUM_ROW = 15;
 	const int BLOCK_SIZE = WINDOW_WIDTH / NUM_COL;
 	const int MAX_X = 500;
-	double movesPerSecond = 3.0;
-	int snakeLength = 2;
-	int xCoords[MAX_SNAKE_LENGTH] = { NUM_COL / 2, NUM_COL / 2 };
-	int yCoords[MAX_SNAKE_LENGTH] = { NUM_ROW / 2, NUM_ROW / 2 - 1 };
+	double movesPerSecond = 4.0;
+	int snakeLength = 3;
+	int xCoords[MAX_SNAKE_LENGTH] = { NUM_COL / 2, NUM_COL / 2, NUM_COL /2 - 1 };
+	int yCoords[MAX_SNAKE_LENGTH] = { NUM_ROW / 2, NUM_ROW / 2 - 1, NUM_ROW / 2 - 1 };
 	int foodPosX = 10, foodPosY = 10;
 	enum direction currentDirection = UP;
 	double elapsedTime = 0.0;
@@ -44,16 +44,16 @@ int main() {
 
 	slWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hello, World", 0);
 	while (!slShouldClose() && !slGetKey(SL_KEY_ESCAPE)) {
-		if (slGetKey(SL_KEY_UP)) {
+		if (slGetKey(SL_KEY_UP) && currentDirection != DOWN) {
 			currentDirection = UP;
 		}
-		else if (slGetKey(SL_KEY_RIGHT)) {
+		else if (slGetKey(SL_KEY_RIGHT) && currentDirection != LEFT) {
 			currentDirection = RIGHT;
 		}
-		else if (slGetKey(SL_KEY_LEFT)) {
+		else if (slGetKey(SL_KEY_LEFT) && currentDirection != RIGHT) {
 			currentDirection = LEFT;
 		}
-		else if (slGetKey(SL_KEY_DOWN)) {
+		else if (slGetKey(SL_KEY_DOWN) && currentDirection != UP) {
 			currentDirection = DOWN;
 		}
 
@@ -128,9 +128,11 @@ void moveSnake(int xs[], int ys[], int size, enum direction dir, int numCols, in
 		break;
 	case DOWN:
 		nextY = (ys[0] - 1) % numRows;
+		if (nextY < 0) nextY = numRows - 1;
 		break;
 	case LEFT:
 		nextX = (xs[0] - 1) % numCols;
+		if (nextX < 0) nextX = numCols - 1;
 		break;
 	default:
 		break;
