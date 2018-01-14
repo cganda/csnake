@@ -5,7 +5,7 @@
 #include <time.h>
 #include "sl.h"
 
-#define MAX_SNAKE_LENGTH 5
+#define MAX_SNAKE_LENGTH 10
 
 void check();
 void end();
@@ -64,6 +64,19 @@ int main() {
 		if (elapsedTime >= 1 / movesPerSecond) {
 			elapsedTime -= (1 / movesPerSecond);
 			moveSnake(xCoords, yCoords, snakeLength, currentDirection, NUM_COL, NUM_ROW);
+
+			if (xCoords[0] == foodPosX && yCoords[0] == foodPosY) {
+				//increaes length
+				if (snakeLength < MAX_SNAKE_LENGTH) {
+					snakeLength++;
+
+					xCoords[snakeLength - 1] = xCoords[0];
+					yCoords[snakeLength - 1] = yCoords[0];
+				}
+				// reset food position
+				foodPosX = rand() % NUM_COL;
+				foodPosY = rand() % NUM_ROW;
+			}
 		}
 		
 		drawGrid(NUM_COL, NUM_ROW, blockWidth, blockHeight, xOffset, yOffset, BORDER_SIZE);
